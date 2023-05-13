@@ -76,14 +76,6 @@ def plot_mae_loss(train_mae, valid_mae):
     plt.legend()
     plt.savefig(os.path.join(figure_path, 'mae.png'))
 
-def plot_metric(train_metric, valid_metric, test_metric):
-    plt.figure()
-    plt.plot(train_metric, label='train metric')
-    plt.plot(valid_metric, label='valid metric')
-    plt.plot(test_metric, label='test metric')
-    plt.legend()
-    plt.savefig(os.path.join(figure_path, 'metric.png'))
-
 def main(args):
     # random seed
     # 设置随机数种子
@@ -186,7 +178,6 @@ def main(args):
     # 画图
     plot_loss(train_loss)
     plot_mae_loss(train_mae_loss, valid_mae_loss)
-    plot_metric(train_rmse, valid_rmse, test_rmse)
 
 if __name__ == '__main__':
     main(args)
