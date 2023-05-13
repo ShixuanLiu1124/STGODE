@@ -33,6 +33,9 @@ def read_data(args):
     """
     filename = args.filename
     file = files[filename]
+
+    print(file)
+
     filepath = "./data/"
     if args.remote:
         filepath = '/home/lantu.lqq/ftemp/data/'
@@ -47,7 +50,7 @@ def read_data(args):
     mean_value = mean_value.reshape(-1)[0]
     std_value = std_value.reshape(-1)[0]
 
-    if not os.path.exists(f'data/{filename}_dtw_distance.npy'):
+    if not os.path.exists(f'./data/{filename}_dtw_distance.npy'):
         data_mean = np.mean([data[:, :, 0][24*12*i: 24*12*(i+1)] for i in range(data.shape[0]//(24*12))], axis=0)
         data_mean = data_mean.squeeze().T 
         dtw_distance = np.zeros((num_node, num_node))
@@ -57,9 +60,9 @@ def read_data(args):
         for i in range(num_node):
             for j in range(i):
                 dtw_distance[i][j] = dtw_distance[j][i]
-        np.save(f'data/{filename}_dtw_distance.npy', dtw_distance)
+        np.save(f'./data/{filename}_dtw_distance.npy', dtw_distance)
 
-    dist_matrix = np.load(f'data/{filename}_dtw_distance.npy')
+    dist_matrix = np.load(f'./data/{filename}_dtw_distance.npy')
 
     mean = np.mean(dist_matrix)
     std = np.std(dist_matrix)
@@ -83,7 +86,7 @@ def read_data(args):
     # dtw_matrix = np.load(f'data/{filename}_dtw_c_matrix.npy')
     
     # use continuous spatial matrix
-    if not os.path.exists(f'data/{filename}_spatial_distance.npy'):
+    if not os.path.exists(f'./data/{filename}_spatial_distance.npy'):
         with open(filepath + file[1], 'r') as fp:
             dist_matrix = np.zeros((num_node, num_node)) + np.float('inf')
             file = csv.reader(fp)
@@ -94,7 +97,7 @@ def read_data(args):
                 end = int(line[1])
                 dist_matrix[start][end] = float(line[2])
                 dist_matrix[end][start] = float(line[2])
-            np.save(f'data/{filename}_spatial_distance.npy', dist_matrix)
+            np.save(f'./data/{filename}_spatial_distance.npy', dist_matrix)
 
     # use 0/1 spatial matrix
     # if not os.path.exists(f'data/{filename}_sp_matrix.npy'):
@@ -104,7 +107,7 @@ def read_data(args):
     #     np.save(f'data/{filename}_sp_matrix.npy', sp_matrix)
     # sp_matrix = np.load(f'data/{filename}_sp_matrix.npy')
 
-    dist_matrix = np.load(f'data/{filename}_spatial_distance.npy')
+    dist_matrix = np.load(f'./data/{filename}_spatial_distance.npy')
     # normalization
     std = np.std(dist_matrix[dist_matrix != np.float('inf')])
     mean = np.mean(dist_matrix[dist_matrix != np.float('inf')])
